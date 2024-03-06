@@ -2,47 +2,52 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 
 		int n = Integer.parseInt(st.nextToken());
 		int m = Integer.parseInt(st.nextToken());
-
+		int rank = 1;
 		int[][] country = new int[n][5];
-		PriorityQueue<int[]> pq;
-		pq = new PriorityQueue<>(new Comparator<int[]>() {
-			@Override
-			public int compare(int[] o1, int[] o2) {
-				if (o1[1] == o2[1]) {
-					if (o1[2] == o2[2]) {
-						if (o1[3] == o2[3]) {
-							return o2[4] - o1[4];
-						}
-						return o2[3] - o1[3];
-					} else {
-						return o2[2] - o1[2];
-					}
-				} else {
-					return o2[1] - o1[1];
-				}
-			}
-		});
-
+		int gold = 0, sliver = 0, bronze = 0;
+		
 		for (int i = 0; i < n; i++) {
 			st = new StringTokenizer(br.readLine());
-			pq.add(new int[] { i + 1, Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()),
-					Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()) });
-		}
-
-		for (int i = 1; i < n + 1; i++) {
-			int[] temp = pq.poll();
-//			System.out.println("id : " + temp[0] + " " + temp[1] + " " + temp[2] + " " + temp[3] + " " + temp[4] + " ");
-			if(i == m) {
-				System.out.println(temp[0]);
-				return;
+			country[i][0] = Integer.parseInt(st.nextToken());
+			country[i][1] = Integer.parseInt(st.nextToken());
+			country[i][2] = Integer.parseInt(st.nextToken());
+			country[i][3] = Integer.parseInt(st.nextToken());
+			if(country[i][0] == m) {
+				gold = country[i][1];
+				sliver = country[i][2];
+				bronze = country[i][3];
 			}
 		}
+		
+		Queue<Integer> same = new LinkedList<>();
+		for (int i = 0; i < n; i++) {
+			if(country[i][0] == m) continue;
+			if (gold < country[i][1]) {
+				rank++;
+			} else if (gold == country[i][1]) {
+				same.add(i);
+			}
+		}
+		
+		if (same.size() > 0) {
+			for (int x : same) {
+				if(sliver < country[x][2]) {
+					rank++;
+				}
+				if (sliver == country[x][2] && bronze < country[x][3]) {
+					rank++;
+				}
+			}
+		}
+		System.out.println(rank);
 
 	}
+
 }
