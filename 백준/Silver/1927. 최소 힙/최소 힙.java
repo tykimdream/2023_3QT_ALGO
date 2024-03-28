@@ -1,36 +1,35 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Comparator;
 import java.util.PriorityQueue;
-import java.util.StringTokenizer;
+import java.util.Scanner;
 
 public class Main {
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
 
-		int n = Integer.parseInt(st.nextToken());
+		int n = sc.nextInt();
+		Comparator comparator = new Comparator<Integer>() {
 
-		PriorityQueue<Integer> que;
-
-		que = new PriorityQueue<>(new Comparator<Integer>() {
 			@Override
 			public int compare(Integer o1, Integer o2) {
-					return o1 - o2;
+				return o1 - o2;
 			}
-		});
-
+		};
+		PriorityQueue<Integer> que = new PriorityQueue<>(comparator);
+		
+		StringBuilder sb = new StringBuilder();
+		
 		for (int i = 0; i < n; i++) {
-			int input = Integer.parseInt(br.readLine());
-			if (input == 0) {
-				if (que.size() > 0)
-					System.out.println(que.poll());
-				else
-					System.out.println(0);
+			int input = sc.nextInt();
+			if(input == 0) {
+				if(que.isEmpty()) {
+					sb.append("0\n");
+				} else {
+					sb.append(que.poll() + "\n");
+				}
 			} else {
 				que.add(input);
-			}
+			}			
 		}
+		System.out.println(sb.toString());
 	}
 }
